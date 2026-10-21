@@ -12,6 +12,19 @@
         "mcp"
       ],
       "env": {}
+    },
+    "shrimp-task-manager": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-shrimp-task-manager"
+      ],
+      "env": {
+        "DATA_DIR": "C:/_Claude Code/claude-code-mastery/course/notion-cms-project/.shrimp/data",
+        "TEMPLATES_USE": "en",
+        "ENABLE_GUI": "false"
+      }
     }
   }
 }

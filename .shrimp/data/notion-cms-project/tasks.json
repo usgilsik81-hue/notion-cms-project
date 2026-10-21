@@ -1,0 +1,270 @@
+{
+  "tasks": [
+    {
+      "id": "68fbf6d3-a4ad-4965-bdaf-b9ab9f0a97d2",
+      "name": "Phase 1: 프로젝트 초기 설정 (골격)",
+      "description": "docs/ROADMAP.md Phase 1 범위 그대로: Next.js 프로젝트 구조/Notion API 연동 환경/기본 레이아웃 골격을 구축한다. @notionhq/client 패키지를 설치하고, Notion API 키·데이터베이스 ID를 환경변수로 연결하며, 블로그 공통 레이아웃이 기존 Header/Footer를 사용하도록 뼈대를 만든다.",
+      "notes": "이 Phase는 코드 기능 구현이 아니라 환경/골격 구축이므로 Notion API 실제 호출 코드는 작성하지 않는다(Phase 2에서 구현).",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-10-21T11:27:44.513Z",
+      "updatedAt": "2026-10-21T11:27:44.513Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase 1 작업 내용과 완료 기준"
+        },
+        {
+          "path": "docs/PRD.md",
+          "type": "REFERENCE",
+          "description": "기술 스택 및 Notion DB 구조"
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "환경변수 접근 규칙, layout/layouts 구분 규칙"
+        },
+        {
+          "path": "package.json",
+          "type": "TO_MODIFY",
+          "description": "@notionhq/client 의존성 추가"
+        },
+        {
+          "path": "src/config/env.config.ts",
+          "type": "TO_MODIFY",
+          "description": "notionApiKey/notionDatabaseId 필드 추가"
+        },
+        {
+          "path": "src/components/layouts/BlogLayout.tsx",
+          "type": "CREATE",
+          "description": "블로그 페이지 레이아웃 래퍼"
+        },
+        {
+          "path": "src/components/layout/Header.tsx",
+          "type": "REFERENCE",
+          "description": "재사용할 전역 헤더"
+        },
+        {
+          "path": "src/components/layout/Footer.tsx",
+          "type": "REFERENCE",
+          "description": "재사용할 전역 푸터"
+        }
+      ],
+      "implementationGuide": "1) package.json에 `@notionhq/client` 의존성 추가(npm install). 2) `.env.local`에 NOTION_API_KEY, NOTION_DATABASE_ID 추가(.gitignore의 `.env*`에 이미 포함되어 커밋되지 않음 확인). 3) `src/config/env.config.ts`에 notionApiKey/notionDatabaseId 필드 추가(process.env 직접 참조는 이 파일에서만). 4) 블로그 라우트가 쓸 레이아웃 뼈대를 `src/components/layouts/BlogLayout.tsx`로 추가하고 기존 `src/components/layout/Header.tsx`, `Footer.tsx`를 재사용해 감싼다(shrimp-rules.md의 layout vs layouts 구분 규칙 준수).",
+      "verificationCriteria": "ROADMAP.md Phase1 완료 기준: Next.js 15+TS 프로젝트가 로컬에서 정상 실행, @notionhq/client 설치 및 .env.local로 API 키/DB ID 연결 완료, 공통 레이아웃(Header/Footer 포함) 뼈대가 모든 페이지에 적용됨.",
+      "analysisResult": "docs/ROADMAP.md의 Phase 1→2→3→4→5 순서를 그대로 유지하여 Notion CMS 블로그를 개발한다. 각 Phase는 ROADMAP.md의 작업 내용/완료 기준을 그대로 task의 범위/검증 기준으로 사용하고, Notion 데이터 모델·기술 스택은 docs/PRD.md, 코드 구조·네이밍·금지 행위는 shrimp-rules.md를 따른다. 현재 저장소는 auth/dashboard 보일러플레이트만 존재하므로(Notion 연동 코드 없음), Phase1에서 패키지/환경변수/골격을 먼저 마련하고, Phase2에서 lib/notion/*·types/post.ts·components/features/blog/* 등 재사용 가능한 공통 모듈을 만든 뒤, Phase3에서 그 모듈을 사용해 글 목록/상세 핵심 기능을, Phase4에서 카테고리·검색·SEO 부가 기능을, Phase5에서 캐싱·반응형·Vercel 배포를 완성한다. 기존 자산(components/layout의 Header/Footer, components/ui의 shadcn 프리미티브, hooks/useDebounce)은 재구현하지 않고 그대로 재사용한다. Phase 순서는 재배열하지 않으며 각 task는 이전 Phase task에 의존한다."
+    },
+    {
+      "id": "5544e425-515e-4cbe-8fd8-e9d3829745df",
+      "name": "Phase 2: 공통 모듈 개발",
+      "description": "docs/ROADMAP.md Phase 2 범위 그대로: 모든 블로그 기능이 재사용할 Notion API 공통 함수, 공통 컴포넌트, 공통 타입을 만든다.",
+      "notes": "캐싱/재검증(ISR, revalidate) 전략은 Phase5(최적화)로 미루고 이 단계에서는 기본 fetch만 구현한다.",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "68fbf6d3-a4ad-4965-bdaf-b9ab9f0a97d2"
+        }
+      ],
+      "createdAt": "2026-10-21T11:27:44.513Z",
+      "updatedAt": "2026-10-21T11:27:44.513Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase 2 작업 내용과 완료 기준"
+        },
+        {
+          "path": "docs/PRD.md",
+          "type": "REFERENCE",
+          "description": "Notion DB 속성 정의"
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "lib/notion 구조, types 재노출 규칙"
+        },
+        {
+          "path": "src/lib/notion/client.ts",
+          "type": "CREATE",
+          "description": "Notion SDK 클라이언트 초기화"
+        },
+        {
+          "path": "src/lib/notion/posts.ts",
+          "type": "CREATE",
+          "description": "fetchPages, fetchPageContent"
+        },
+        {
+          "path": "src/types/post.ts",
+          "type": "CREATE",
+          "description": "Post, Category 타입"
+        },
+        {
+          "path": "src/types/index.ts",
+          "type": "TO_MODIFY",
+          "description": "post 타입 재노출"
+        },
+        {
+          "path": "src/components/features/blog/PostCard.tsx",
+          "type": "CREATE",
+          "description": "글 목록 카드 컴포넌트"
+        },
+        {
+          "path": "src/components/features/blog/index.ts",
+          "type": "CREATE",
+          "description": "blog 도메인 컴포넌트 재노출"
+        },
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "REFERENCE",
+          "description": "재사용할 shadcn Card"
+        },
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "REFERENCE",
+          "description": "재사용할 shadcn Badge"
+        }
+      ],
+      "implementationGuide": "1) `src/lib/notion/client.ts`에 envConfig 기반 Notion `Client` 인스턴스 생성(서버 전용 모듈). 2) `src/lib/notion/posts.ts`에 `fetchPages()`(DB 질의, Status=발행됨만, Published desc 정렬 pseudocode)와 `fetchPageContent(pageId)`(블록 목록 조회) 구현 — 이 두 함수가 Notion SDK를 호출하는 유일한 지점. 3) `src/types/post.ts`에 PRD §4 속성에 대응하는 `Post`(title, category, tags, published, status)와 `Category` 타입 정의 후 `src/types/index.ts`에 `export * from \"./post\"` 추가. 4) `src/components/features/blog/PostCard.tsx`(목록용 카드, 기존 `components/ui`의 Card/Badge 재사용), `Category.tsx`(카테고리 뱃지) 작성 후 `src/components/features/blog/index.ts`에서 재노출.",
+      "verificationCriteria": "ROADMAP.md Phase2 완료 기준: fetchPages/fetchPageContent로 Notion 데이터를 콘솔에서 확인 가능, PostCard 등 공통 컴포넌트가 임시 페이지에서 정상 렌더링, Post/Category 타입이 Notion 응답에 적용됨.",
+      "analysisResult": "docs/ROADMAP.md의 Phase 1→2→3→4→5 순서를 그대로 유지하여 Notion CMS 블로그를 개발한다. 각 Phase는 ROADMAP.md의 작업 내용/완료 기준을 그대로 task의 범위/검증 기준으로 사용하고, Notion 데이터 모델·기술 스택은 docs/PRD.md, 코드 구조·네이밍·금지 행위는 shrimp-rules.md를 따른다. 현재 저장소는 auth/dashboard 보일러플레이트만 존재하므로(Notion 연동 코드 없음), Phase1에서 패키지/환경변수/골격을 먼저 마련하고, Phase2에서 lib/notion/*·types/post.ts·components/features/blog/* 등 재사용 가능한 공통 모듈을 만든 뒤, Phase3에서 그 모듈을 사용해 글 목록/상세 핵심 기능을, Phase4에서 카테고리·검색·SEO 부가 기능을, Phase5에서 캐싱·반응형·Vercel 배포를 완성한다. 기존 자산(components/layout의 Header/Footer, components/ui의 shadcn 프리미티브, hooks/useDebounce)은 재구현하지 않고 그대로 재사용한다. Phase 순서는 재배열하지 않으며 각 task는 이전 Phase task에 의존한다."
+    },
+    {
+      "id": "a5163087-1d91-426c-9c09-433fccaead1e",
+      "name": "Phase 3: 핵심 기능 개발",
+      "description": "docs/ROADMAP.md Phase 3 범위 그대로: 블로그 글 목록 페이지, 글 상세 페이지, Notion 콘텐츠 렌더링을 구현한다.",
+      "notes": "SEO 메타데이터, 카테고리 필터, 검색은 Phase4에서 다룬다 — 이 단계는 글 노출/렌더링 자체에만 집중한다.",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "5544e425-515e-4cbe-8fd8-e9d3829745df"
+        }
+      ],
+      "createdAt": "2026-10-21T11:27:44.513Z",
+      "updatedAt": "2026-10-21T11:27:44.513Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase 3 작업 내용과 완료 기준"
+        },
+        {
+          "path": "src/lib/notion/posts.ts",
+          "type": "REFERENCE",
+          "description": "fetchPages/fetchPageContent 사용"
+        },
+        {
+          "path": "src/types/post.ts",
+          "type": "REFERENCE",
+          "description": "Post 타입 사용"
+        },
+        {
+          "path": "src/app/blog/page.tsx",
+          "type": "CREATE",
+          "description": "글 목록 페이지"
+        },
+        {
+          "path": "src/app/blog/[slug]/page.tsx",
+          "type": "CREATE",
+          "description": "글 상세 페이지"
+        },
+        {
+          "path": "src/components/features/blog/PostCard.tsx",
+          "type": "REFERENCE",
+          "description": "목록에서 재사용"
+        }
+      ],
+      "implementationGuide": "1) 홈 또는 `src/app/blog/page.tsx`에서 `fetchPages()`를 호출해 Status=발행됨 글만 Published 내림차순으로 PostCard 목록 렌더링. 2) `src/app/blog/[slug]/page.tsx`(또는 pageId 기반 동적 라우트)에서 `fetchPageContent`로 Notion 블록을 가져와 텍스트/이미지/코드블록 등을 렌더링하는 컴포넌트 작성. 3) Status=초안인 글은 목록/상세 양쪽에서 제외되도록 Phase2의 fetchPages 필터 또는 페이지 레벨 가드로 보장.",
+      "verificationCriteria": "ROADMAP.md Phase3 완료 기준: 홈/목록 화면에 발행된 글만 최신순 표시, 글 클릭 시 상세 페이지 이동 및 본문(텍스트/이미지/코드블록) 정상 렌더링, 초안 상태 글은 노출되지 않음.",
+      "analysisResult": "docs/ROADMAP.md의 Phase 1→2→3→4→5 순서를 그대로 유지하여 Notion CMS 블로그를 개발한다. 각 Phase는 ROADMAP.md의 작업 내용/완료 기준을 그대로 task의 범위/검증 기준으로 사용하고, Notion 데이터 모델·기술 스택은 docs/PRD.md, 코드 구조·네이밍·금지 행위는 shrimp-rules.md를 따른다. 현재 저장소는 auth/dashboard 보일러플레이트만 존재하므로(Notion 연동 코드 없음), Phase1에서 패키지/환경변수/골격을 먼저 마련하고, Phase2에서 lib/notion/*·types/post.ts·components/features/blog/* 등 재사용 가능한 공통 모듈을 만든 뒤, Phase3에서 그 모듈을 사용해 글 목록/상세 핵심 기능을, Phase4에서 카테고리·검색·SEO 부가 기능을, Phase5에서 캐싱·반응형·Vercel 배포를 완성한다. 기존 자산(components/layout의 Header/Footer, components/ui의 shadcn 프리미티브, hooks/useDebounce)은 재구현하지 않고 그대로 재사용한다. Phase 순서는 재배열하지 않으며 각 task는 이전 Phase task에 의존한다."
+    },
+    {
+      "id": "52d7a98f-9f3a-419f-84b9-5abf3fcb4cef",
+      "name": "Phase 4: 추가 기능 개발",
+      "description": "docs/ROADMAP.md Phase 4 범위 그대로: 카테고리 필터링, 검색 기능, SEO 최적화를 추가한다.",
+      "notes": "검색 입력 UI는 `src/components/ui/input.tsx`를 재사용하고 새 input 프리미티브를 만들지 않는다.",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "a5163087-1d91-426c-9c09-433fccaead1e"
+        }
+      ],
+      "createdAt": "2026-10-21T11:27:44.513Z",
+      "updatedAt": "2026-10-21T11:27:44.513Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase 4 작업 내용과 완료 기준"
+        },
+        {
+          "path": "src/hooks/useDebounce.ts",
+          "type": "REFERENCE",
+          "description": "검색 입력 디바운스 재사용"
+        },
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "REFERENCE",
+          "description": "검색 입력 UI 재사용"
+        },
+        {
+          "path": "src/app/blog/category/[category]/page.tsx",
+          "type": "CREATE",
+          "description": "카테고리별 글 목록 페이지"
+        },
+        {
+          "path": "src/app/blog/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "검색 UI 및 generateMetadata 추가"
+        },
+        {
+          "path": "src/app/blog/[slug]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "generateMetadata 추가"
+        }
+      ],
+      "implementationGuide": "1) 카테고리별 라우트(예: `src/app/blog/category/[category]/page.tsx`)에서 fetchPages 결과를 category로 필터링해 표시. 2) 검색은 제목/태그 기준으로, 기존 `src/hooks/useDebounce.ts`를 재사용해 입력 디바운스 후 필터링(클라이언트 필터 또는 쿼리 파라미터 기반). 3) 각 블로그 페이지에 Next.js `generateMetadata`로 title/description/OG 태그 설정.",
+      "verificationCriteria": "ROADMAP.md Phase4 완료 기준: 카테고리 페이지에서 해당 카테고리 글만 표시, 검색어 입력 시 제목/태그 기준 필터링 동작, 각 페이지에 메타 타이틀/디스크립션/OG 태그 설정됨.",
+      "analysisResult": "docs/ROADMAP.md의 Phase 1→2→3→4→5 순서를 그대로 유지하여 Notion CMS 블로그를 개발한다. 각 Phase는 ROADMAP.md의 작업 내용/완료 기준을 그대로 task의 범위/검증 기준으로 사용하고, Notion 데이터 모델·기술 스택은 docs/PRD.md, 코드 구조·네이밍·금지 행위는 shrimp-rules.md를 따른다. 현재 저장소는 auth/dashboard 보일러플레이트만 존재하므로(Notion 연동 코드 없음), Phase1에서 패키지/환경변수/골격을 먼저 마련하고, Phase2에서 lib/notion/*·types/post.ts·components/features/blog/* 등 재사용 가능한 공통 모듈을 만든 뒤, Phase3에서 그 모듈을 사용해 글 목록/상세 핵심 기능을, Phase4에서 카테고리·검색·SEO 부가 기능을, Phase5에서 캐싱·반응형·Vercel 배포를 완성한다. 기존 자산(components/layout의 Header/Footer, components/ui의 shadcn 프리미티브, hooks/useDebounce)은 재구현하지 않고 그대로 재사용한다. Phase 순서는 재배열하지 않으며 각 task는 이전 Phase task에 의존한다."
+    },
+    {
+      "id": "d8003109-a5eb-493d-be98-e5fb9c96a1d4",
+      "name": "Phase 5: 최적화 및 배포",
+      "description": "docs/ROADMAP.md Phase 5 범위 그대로: 성능 최적화(캐싱 포함), 반응형 디자인 개선, Vercel 배포를 수행한다.",
+      "notes": "이 Phase는 기능 변경이 끝난 뒤에만 진행 — 기능 범위가 이미 고정된 상태에서 품질만 다듬는다(ROADMAP.md '왜 이 순서인가?' 참고).",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "52d7a98f-9f3a-419f-84b9-5abf3fcb4cef"
+        }
+      ],
+      "createdAt": "2026-10-21T11:27:44.513Z",
+      "updatedAt": "2026-10-21T11:27:44.513Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase 5 작업 내용과 완료 기준"
+        },
+        {
+          "path": "src/lib/notion/posts.ts",
+          "type": "TO_MODIFY",
+          "description": "캐싱/재검증 전략 적용"
+        },
+        {
+          "path": "src/app/blog/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "반응형/이미지 최적화"
+        },
+        {
+          "path": "src/app/blog/[slug]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "반응형/이미지 최적화"
+        }
+      ],
+      "implementationGuide": "1) 이미지에 `next/image` 적용, Phase2에서 미뤄둔 Notion fetch 캐싱/재검증(revalidate) 전략 적용. 2) 모바일/태블릿/데스크톱 주요 해상도에서 블로그 목록/상세/카테고리 페이지 레이아웃 점검 및 Tailwind 반응형 클래스 보완. 3) Vercel에 배포하고 NOTION_API_KEY/NOTION_DATABASE_ID 등 환경변수를 Vercel 프로젝트 설정에 등록(NEXT_PUBLIC_ 접두사 없이).",
+      "verificationCriteria": "ROADMAP.md Phase5 완료 기준: next/image 적용 및 불필요한 리렌더링 제거, 모바일/태블릿/데스크톱에서 레이아웃 깨짐 없음, Vercel 배포 후 운영 URL에서 정상 접속 및 Notion 글 변경사항 반영 확인.",
+      "analysisResult": "docs/ROADMAP.md의 Phase 1→2→3→4→5 순서를 그대로 유지하여 Notion CMS 블로그를 개발한다. 각 Phase는 ROADMAP.md의 작업 내용/완료 기준을 그대로 task의 범위/검증 기준으로 사용하고, Notion 데이터 모델·기술 스택은 docs/PRD.md, 코드 구조·네이밍·금지 행위는 shrimp-rules.md를 따른다. 현재 저장소는 auth/dashboard 보일러플레이트만 존재하므로(Notion 연동 코드 없음), Phase1에서 패키지/환경변수/골격을 먼저 마련하고, Phase2에서 lib/notion/*·types/post.ts·components/features/blog/* 등 재사용 가능한 공통 모듈을 만든 뒤, Phase3에서 그 모듈을 사용해 글 목록/상세 핵심 기능을, Phase4에서 카테고리·검색·SEO 부가 기능을, Phase5에서 캐싱·반응형·Vercel 배포를 완성한다. 기존 자산(components/layout의 Header/Footer, components/ui의 shadcn 프리미티브, hooks/useDebounce)은 재구현하지 않고 그대로 재사용한다. Phase 순서는 재배열하지 않으며 각 task는 이전 Phase task에 의존한다."
+    }
+  ]
+}
